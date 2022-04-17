@@ -45,15 +45,16 @@ public class Register extends HttpServlet {
             String name = request.getParameter("user_name");
             String password = request.getParameter("user_password");
             String email = request.getParameter("user_email");
-            Part part = request.getPart("image");
+//            Part part = request.getPart("image");
             
-            String filename = part.getSubmittedFileName();
+//            String filename = part.getSubmittedFileName();
 //            out.println(filename);
             
-            //for debugging purpose
+//            for debugging purpose
 //            out.println("name :"+ name);
 //            out.println("password: " + password);
 //            out.println("email : " + email);
+              System.out.println(name);
             
             //connection to database.........
             try {
@@ -64,25 +65,28 @@ public class Register extends HttpServlet {
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/register","root","");
                 
                 //query for insert data into database
-                String q = "insert into user(name, password, email,imageName) values (?,?,?,?)";
+//                String q = "insert into user(name, password, email,imageName) values (?,?,?,?)";
+                String q = "insert into user(name, password, email) values (?,?,?)";
                 
                 PreparedStatement pstmt = con.prepareStatement(q);
                 pstmt.setString(1,name);
                 pstmt.setString(2,password);
                 pstmt.setString(3,email);
-                pstmt.setString(4, filename);
-                pstmt.executeUpdate();
+//                pstmt.setString(4, filename);
+                int i = pstmt.executeUpdate();
+                System.out.println(i + "uploaded");
+                //upload text in server
                 
                 //upload file in server
-                InputStream is = part.getInputStream();
-                byte [] data = new byte[is.available()];
-                is.read(data);
+//                InputStream is = part.getInputStream();
+//                byte [] data = new byte[is.available()];
+//                is.read(data);
                 
-                String path = request.getRealPath("/") + "img" + File.separator + filename;
+//                String path = request.getRealPath("/") + "img" + File.separator + filename;
 //                out.println(path);  //for debugging purpose
-                FileOutputStream fos = new FileOutputStream(path);
-                fos.write(data);
-                fos.close();
+//                FileOutputStream fos = new FileOutputStream(path);
+//                fos.write(data);
+//                fos.close();
                 
                 
                 out.println("done");
